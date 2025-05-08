@@ -1,10 +1,12 @@
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from 'src/modules/users/entities/user.entity';
 
 @Entity('tasks')
 export class Task {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
+  @Column()
+  title: string
 
   @Column()
   description: string;

@@ -3,6 +3,7 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
+import { Task } from '../tasks/entities/task.entity';
 
 @Injectable()
 export class UserService {
@@ -10,6 +11,12 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
+
+
+  async getallUser(): Promise<User[]> {
+    const users = await this.userRepository.find();
+    return users;
+  }
 
   async getUser(username: string): Promise<User> {
     const user = await this.userRepository.findOneBy({ username });

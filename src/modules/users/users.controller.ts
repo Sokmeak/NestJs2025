@@ -18,6 +18,11 @@ export class UsersController {
     return this.userService.getUser(username);
   }
 
+  @Get()
+  getAllUsers(){
+    return this.userService.getallUser();
+  }
+
   @Post('')
   createUser(
     @Body() body: { username: string; email: string; password: string },
