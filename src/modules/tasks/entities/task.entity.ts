@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { User } from 'src/modules/users/entities/user.entity';
 
 @Entity('tasks')
@@ -6,9 +12,9 @@ export class Task {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
-  title: string
+  title: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
