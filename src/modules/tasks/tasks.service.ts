@@ -7,6 +7,7 @@ import { User } from '../users/entities/user.entity';
 import { Task } from './entities/task.entity';
 import { NotFoundException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { log } from 'console';
 @Injectable()
 export class TasksService {
   constructor(
@@ -58,5 +59,9 @@ export class TasksService {
     const task = await this.findOne(id); // this throws NotFoundException if not found
     await this.taskRepository.remove(task);
     return { message: `Task ${id} has removed successfully!` };
+  }
+  async clearAll(): Promise<void> {
+    await this.taskRepository.clear();
+    log('All tasks have removed!');
   }
 }
