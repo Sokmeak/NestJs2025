@@ -6,6 +6,7 @@ import { NotFoundException } from '@nestjs/common';
 import { Task } from '../tasks/entities/task.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -46,34 +47,38 @@ export class UserService {
     return this.userRepository.save(newUser);
   }
 
-  async updateUser(
-    username: string,
-    body: { username: string; email: string; password: string },
-  ): Promise<User> {
-    const user = await this.userRepository.findOneBy({ username });
-    if (!user) throw new NotFoundException(`User ${username} not found`);
+  async updateUser(id: number, body: UpdateUserDto): Promise<User> {
+    const user = await this.userRepository.findOneBy({id});
+    if (!user) throw new NotFoundException(`User with ${id} not found`);
 
     Object.assign(user, body);
     return this.userRepository.save(user);
   }
   async findOne(id: number): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepository.findOne({ where: { id: id } });
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
     return user;
   }
 
-  async deleteUser(
-    username: string,
-    password: string,
-  ): Promise<{ message: string }> {
-    const user = await this.userRepository.findOneBy({ username, password });
+  async deleteUser(username: string): Promise<{ message: string }> {
+    const user = await this.userRepository.findOneBy({ username });
     if (!user) throw new NotFoundException(`Invalid username or password`);
 
     await this.userRepository.remove(user);
     return {
       message: `User ${username} deleted successfully`,
+    };
+  }
+
+  async deleteUserById(id: number): Promise<{ message: string }> {
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user) throw new NotFoundException(`Invalid username or password`);
+
+    await this.userRepository.remove(user);
+    return {
+      message: `User with ${id} deleted successfully`,
     };
   }
 }

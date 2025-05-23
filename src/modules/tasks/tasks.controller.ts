@@ -41,9 +41,8 @@ export class TasksController {
     return this.tasksService.remove(+id);
   }
   @Delete()
-    
-  async clearAll() {
+  async clearAll(): Promise<Object> {
     await this.tasksService.clearAll();
-    return { message: 'All tasks have been removed!' };
+    return { message: 'All tasks have been removed!', status: 200 };
   }
 }
